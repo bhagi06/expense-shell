@@ -48,3 +48,11 @@ VALIDATE $? "installing default node js"
 useradd expense
 VALIDATE $? "creatig expense user"
 
+id expense
+if [$? -ne 0]
+then
+  useradd expense
+VALIDATE $? 'Creating expense user"
+else
+echo -e "expense user alread created ....$Y SKIPPING $N"
+fi
