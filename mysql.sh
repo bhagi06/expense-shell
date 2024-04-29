@@ -14,7 +14,8 @@ R="\e[31m"
 G="\e[32m"
 Y="\e[33m"
 N="\6[0m"
-
+echo "Please enter db password  :"
+read -s mysql_root_password
 #root access
 VALIDATE(){
     if [$1 -ne 0 ]
@@ -45,10 +46,10 @@ VALIDATE $? "Starting my sql server"
 
 # mysql_secure_installation --set-root-pass ExpenseApp@1
 # VALIDATE $? "setting up root password"
-mysql -h db.bhagi.online -uroot -pExpenseApp@1 -e 'show databases;' &>>$LOGFILE
+mysql -h db.bhagi.online -uroot -p${mysql_root_password} -e 'show databases;' &>>$LOGFILE
 if [$? -ne 0]
 then
-mysql_secure_installation --set-root-pass ExpenseApp@1 &>>$LOGFILE
+mysql_secure_installation --set-root-pass ${mysql_root_password} &>>$LOGFILE
 VALIDATE $? "MYSQL ROOT PASSWORD SETUP"
 else
 echo -e "mysql root password is already setup...$Y SKIPPING $N"
