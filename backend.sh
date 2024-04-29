@@ -56,3 +56,31 @@ VALIDATE  $? "Creating expense user"
 else
 echo -e "expense user alread created ....$Y SKIPPING $N"
 fi
+
+mkdir -p /app
+VALIDATE $? "creating app directory"
+
+curl -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip
+VALIDATE $? "Downloading backend code"
+cd /app &>>LOGFILE
+unzip /tmp/backend.zip
+
+npm install &>>LOGFILE
+VALIDATE $? "installing nodejs dependencies"
+
+cp /home/ec2-user/expense-shell/backend.service /etc/system/backend.service
+VALIDATE $? "copied backend service" &>>LOGFILE
+
+systemctl daemon-reload &>>LOGFILE
+VALIDATE $? "daemon and reload"
+
+systemctl enable backend &>>LOGFILE
+VALIDATE $? "starting and enabling backend"
+
+dnf install mysql -y  &>>LOGFILE
+VALIDATE $? "installing mysql client"
+
+mysql -h mysql.bhagi.online -uroot -p${mysql_root_password} < /app/schema/backend.sql &>>LOGFILE
+VALIDATE $? "schema loading"
+systemctl restart backend &>>LOGFILE
+VALIDATE $? "restrting backend" 
