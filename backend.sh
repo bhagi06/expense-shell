@@ -48,7 +48,7 @@ VALIDATE $? "installing default node js"
 useradd expense
 VALIDATE $? "creatig expense user"
 
-id expense -y &>>LOGFILE
+id expense  &>>LOGFILE
 if [$? -ne 0]
 then
   useradd expense &>>LOGFILE
