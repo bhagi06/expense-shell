@@ -46,7 +46,7 @@ VALIDATE $? "Starting my sql server"
 
 # mysql_secure_installation --set-root-pass ExpenseApp@1
 # VALIDATE $? "setting up root password"
-mysql -h db.bhagi.online -uroot -p${mysql_root_password} -e 'show databases;' &>>$LOGFILE
+mysql -h mysql.bhagi.online -uroot -p${mysql_root_password} -e 'show databases;' &>>$LOGFILE
 if [$? -ne 0]
 then
 mysql_secure_installation --set-root-pass ${mysql_root_password} &>>$LOGFILE
